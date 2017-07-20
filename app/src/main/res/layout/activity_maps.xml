@@ -31,13 +31,13 @@
             android:id="@+id/btnHospital"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Art Gallery" />
+            android:text="Art Gallery." />
 
         <Button
             android:id="@+id/btnSchool"
             android:layout_width="156dp"
             android:layout_height="wrap_content"
-            android:text="Electronic Store"
+            android:text="Electronic Store."
             android:layout_toEndOf="@+id/btnHospital" />
 
         <TextView
