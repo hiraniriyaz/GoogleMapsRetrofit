@@ -31,14 +31,47 @@
             android:id="@+id/btnHospital"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Art Gallery." />
+            android:text="maps" />
 
-        <Button
-            android:id="@+id/btnSchool"
-            android:layout_width="156dp"
+
+
+        <!--<Button-->
+            <!--android:id="@+id/btnSchool"-->
+            <!--android:layout_width="156dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Electronic Store."-->
+            <!--android:layout_toEndOf="@+id/btnHospital" />-->
+
+        <ToggleButton
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Electronic Store."
-            android:layout_toEndOf="@+id/btnHospital" />
+            android:text="TERRAIN"
+            android:id="@+id/toggleButton"
+            android:checked="true"
+            android:layout_toEndOf="@+id/btnHospital"
+            />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On"
+            android:id="@+id/toggleButton1"
+            android:checked="true"
+            android:layout_toEndOf="@+id/toggleButton"
+            android:onClick="displaybankLocations"/>
+        <Button
+            android:id="@+id/btnListView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ListView"
+            android:layout_toEndOf="@id/toggleButton1"/>
+            <!--<ListView-->
+                <!--android:id="@+id/id_list_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"/>-->
+                <!--android:visibility="invisible"-->
+                <!--android:background="#FFFFFF"-->
+                <!--android:textColor = "#FFFFFF"/>-->
 
         <TextView
             android:id="@+id/tv_lat"

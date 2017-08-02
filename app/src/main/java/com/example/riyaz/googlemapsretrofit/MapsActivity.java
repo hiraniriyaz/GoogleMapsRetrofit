@@ -1,17 +1,28 @@
 package com.example.riyaz.googlemapsretrofit;
 
 import android.Manifest;
+import android.app.Fragment;
+import android.app.ListActivity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.riyaz.googlemapsretrofit.POJO.Example;
 import com.google.android.gms.common.ConnectionResult;
@@ -24,11 +35,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit.Call;
@@ -50,6 +63,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
+    int flag = 0,flag1 = 0;
+    private ListView m_listview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -115,34 +130,58 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         }
 
-//        Button btnRestaurant = (Button) findViewById(R.id.btnRestaurant);
-//        btnRestaurant.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                build_retrofit_and_get_response("spa");
-//            }
-//        });
-
         Button btnHospital = (Button) findViewById(R.id.btnHospital);
         btnHospital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                build_retrofit_and_get_response("art_gallery");
+                build_retrofit_and_get_response("bank");
             }
         });
 
-        Button btnSchool = (Button) findViewById(R.id.btnSchool);
-        btnSchool.setOnClickListener(new View.OnClickListener() {
+        Button btnListView = (Button)findViewById(R.id.btnListView);
+        btnListView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                build_retrofit_and_get_response("electronics_store");
+            public void onClick(View view) {
+                build_retrofit_and_get_response("bank");
+                flag1 = 1;
+
             }
         });
+
+        ToggleButton tg1 = (ToggleButton) findViewById(R.id.toggleButton);
+        tg1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(flag == 0){
+                    mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                    flag = 1;
+                }
+                else if(flag == 1){
+                    mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                    flag = 0;
+                }
+            }
+        });
+
+//        ToggleButton tg2 = (ToggleButton) findViewById(R.id.toggleButton1);
+//        tg2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(flag1 == 0){
+//                    flag1 = 1;
+//                }
+//                else if(flag1 == 1){
+//                    flag1 = 0;
+//                }
+//            }
+//        });
+
     }
 
-    private void build_retrofit_and_get_response(String type) {
 
+    private void build_retrofit_and_get_response(String type) {
         String url = "https://maps.googleapis.com/maps/";
+//        String url = "https://maps.googleapis.com/maps/place/textsearch/json?query=BBVA+Compass&location="+latitude+","+longitude+"&radius=10000";
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
@@ -150,7 +189,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build();
 
         RetrofitMaps service = retrofit.create(RetrofitMaps.class);
-
         Call<Example> call = service.getNearbyPlaces(type, latitude + "," + longitude, PROXIMITY_RADIUS);
 
         call.enqueue(new Callback<Example>() {
@@ -158,12 +196,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onResponse(Response<Example> response, Retrofit retrofit) {
 
                 try {
+                    if(flag1 == 0){
                     mMap.clear();
                     // This loop will go through all the results and add marker on each location.
                     for (int i = 0; i < response.body().getResults().size(); i++) {
                         Double lat = response.body().getResults().get(i).getGeometry().getLocation().getLat();
                         Double lng = response.body().getResults().get(i).getGeometry().getLocation().getLng();
                         String placeName = response.body().getResults().get(i).getName();
+//                        if (placeName.contains("BBVA")) {
                         String vicinity = response.body().getResults().get(i).getVicinity();
                         MarkerOptions markerOptions = new MarkerOptions();
                         LatLng latLng = new LatLng(lat, lng);
@@ -179,6 +219,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
                     }
+                    }
+                    else if (flag1 == 1)
+                    {
+
+                        Intent i =new Intent(MapsActivity.this,DisplayLocActivity.class);
+                        startActivity(i);
+
+                    }
                 } catch (Exception e) {
                     Log.d("onResponse", "There is an error");
                     e.printStackTrace();
@@ -191,6 +239,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
+
+
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -321,4 +371,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // You can add here other case statements according to your requirement.
         }
     }
+
+    // displa
+//    public void displaybankLocations(View view) {
+//        Intent intent = new Intent(this, DisplayLocActivity.class)
+//    }
 }
