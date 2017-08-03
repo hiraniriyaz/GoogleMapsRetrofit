@@ -134,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnHospital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                build_retrofit_and_get_response("bank");
+                build_retrofit_and_get_response("bank");
             }
         });
 

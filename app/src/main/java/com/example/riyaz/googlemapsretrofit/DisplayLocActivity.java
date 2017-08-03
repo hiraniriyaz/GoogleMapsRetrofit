@@ -36,14 +36,14 @@ public class DisplayLocActivity extends AppCompatActivity{
 
     String[] country = {"India", "USA", "Pakistan", "China", "Egypt", "Canada", "Malysia", "UAE", "UK",
                 "France", "Poland", "Greece", "Mexico", "Spain", "Australia"};
-    Double lat[];
-    Double longi[];
+    double lat[] = new double[20];
+    double longi[]= new double[20];
     String vicinity[];
     RecyclerView recyclerView;
     LocationAdapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    double latitude =36;
-    double longitude = -76;
+    double latitude =39.000089;
+    double longitude = -76.863842;
     private int PROXIMITY_RADIUS = 10000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class DisplayLocActivity extends AppCompatActivity{
     }
 
     private void build_retrofit_and_get_response(String type) {
-        String url = "https://maps.googleapis.com/maps/api";
+        String url = "https://maps.googleapis.com/maps/";
 //        String url = "https://maps.googleapis.com/maps/place/textsearch/json?query=BBVA+Compass&location="+latitude+","+longitude+"&radius=10000";
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -82,10 +82,10 @@ public class DisplayLocActivity extends AppCompatActivity{
                     for (int i = 0; i < response.body().getResults().size(); i++){
                         lat[i] = response.body().getResults().get(i).getGeometry().getLocation().getLat();
                         longi[i] = response.body().getResults().get(i).getGeometry().getLocation().getLng();
-                        vicinity[i] = response.body().getResults().get(i).getVicinity();
+//                        vicinity[i] = response.body().getResults().get(i).getVicinity();
                     }
 
-                    adapter = new LocationAdapter(country,vicinity);
+                    adapter = new LocationAdapter(country,lat,longi);
                     recyclerView.setAdapter(adapter);
                     layoutManager = new LinearLayoutManager(DisplayLocActivity.this);
                     recyclerView.setLayoutManager(layoutManager);
