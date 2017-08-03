@@ -14,11 +14,20 @@ import java.util.List;
  * Created by Riyaz on 8/1/2017.
  */
 
+
+
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MainViewHolder> {
 
     String country[];
-    public LocationAdapter( String country[]){
+    Double lat[];
+    Double longi[];
+    String vicinity[];
+//    Double lat[], Double longi[],
+    public LocationAdapter( String country[], String vicinity[]){
         this.country = country;
+//        this.lat = lat;
+//        this.longi = longi;
+        this.vicinity = vicinity;
 
     }
     @Override
@@ -32,6 +41,9 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MainVi
     @Override
     public void onBindViewHolder(LocationAdapter.MainViewHolder holder, int position) {
         holder.tx_country.setText(country[position]);
+//        holder.tx_lat.setText((lat[position]).toString());
+//        holder.tx_longi.setText((longi[position]).toString());
+        holder.tx_vicinity.setText(vicinity[position]);
     }
 
     @Override
@@ -40,11 +52,15 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MainVi
     }
 
     public class MainViewHolder extends RecyclerView.ViewHolder{
-        TextView tx_country;
+        TextView tx_country, tx_lat,tx_longi,tx_vicinity;
+
 
         public MainViewHolder(View view){
             super(view);
             tx_country = (TextView)view.findViewById(R.id.country);
+//            tx_lat = (TextView)view.findViewById(R.id.lat);
+//            tx_longi = (TextView)view.findViewById(R.id.longi);
+            tx_vicinity = (TextView)view.findViewById(R.id.vicinity);
         }
     }
 

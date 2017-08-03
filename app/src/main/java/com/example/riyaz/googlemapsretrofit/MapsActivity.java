@@ -134,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnHospital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                build_retrofit_and_get_response("bank");
+//                build_retrofit_and_get_response("bank");
             }
         });
 
@@ -142,8 +142,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnListView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                build_retrofit_and_get_response("bank");
+//                build_retrofit_and_get_response("bank");
                 flag1 = 1;
+                Intent i =new Intent(MapsActivity.this,DisplayLocActivity.class);
+                        startActivity(i);
 
             }
         });

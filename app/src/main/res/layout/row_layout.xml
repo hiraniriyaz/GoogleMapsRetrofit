@@ -5,10 +5,31 @@
 
     <TextView
         android:id="@+id/country"
-        android:layout_width="130dp"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="India" />
+    <TextView
+        android:id="@+id/lat"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Latitude"
+        android:layout_toEndOf="@+id/country"/>
+    <TextView
+        android:id="@+id/longi"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Longitude"
+        android:layout_toEndOf="@+id/lat"/>
+    <TextView
+        android:id="@+id/vicinity"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Vicinity"
+        android:layout_toEndOf="@+id/longi"/>
 
 
 </RelativeLayout>
